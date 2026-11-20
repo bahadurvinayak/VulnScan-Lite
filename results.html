@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VulnScan Lite | Scan Results</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">VulnScan <span>Lite</span></div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/results">Results</a>
+        </div>
+    </nav>
+
+    <main class="hero">
+        <div class="hero-content">
+            <h1>Scanner <span>Results</span></h1>
+
+            {% if results.success %}
+
+<div class="scan-card">
+    <h2>Website Security Score</h2>
+
+    <h1>
+        {{ results.security_score.score }}/100
+    </h1>
+
+    <h2>
+        {{ results.security_score.rating }}
+    </h2>
+
+    <p>Overall educational security assessment score.</p>
+</div>
+
+<div class="scan-card">
+    <h2>Risk Summary</h2>
+
+    <p>High Risk: {{ results.risk_summary.High }}</p>
+    <p>Medium Risk: {{ results.risk_summary.Medium }}</p>
+    <p>Low Risk: {{ results.risk_summary.Low }}</p>
+    <p>Information: {{ results.risk_summary.Information }}</p>
+</div>
+
+
+                <div class="scan-card">
+                    <h2>Website Information</h2>
+
+                    <p><strong>URL:</strong> {{ results.url }}</p>
+                    <p><strong>HTTP Status:</strong> {{ results.status_code }}
+                        {{ results.status_message }}</p>
+                    <p><strong>Server:</strong> {{ results.server }}</p>
+                    <p><strong>Content Type:</strong> {{ results.content_type }}</p>
+                    <p><strong>Response Time:</strong>
+                        {{ results.response_time }} seconds</p>
+                    <p><strong>Redirect Detected:</strong>
+                        {{ results.redirect_detected }}</p>
+                    <p><strong>Redirect Location:</strong>
+                        {{ results.redirect_location }}</p>
+                </div>
+
+                <div class="scan-card">
+                    <h2>HTTP Response Headers</h2>
+
+                    {% for name, value in results.headers.items() %}
+                        <p><strong>{{ name }}:</strong> {{ value }}</p>
+                    {% endfor %}
+                </div>
+
+<div class="scan-card">
+    <h2>HTTPS Security Check</h2>
+
+    <p>
+        <strong>{{ results.https_check.name }}:</strong>
+        {{ results.https_check.status }}
+    </p>
+
+    <p>{{ results.https_check.message }}</p>
+</div>
+
+<div class="scan-card">
+    <h2>HTTP Security Headers</h2>
+
+    {% for item in results.security_headers %}
+        <p>
+            <strong>{{ item.name }}:</strong>
+            {{ item.status }} — {{ item.description }}
+        </p>
+    {% endfor %}
+</div>
+
+<div class="scan-card">
+    <h2>Cookie Security Checks</h2>
+
+    {% for item in results.cookie_checks %}
+        <p>
+            <strong>{{ item.name }}:</strong>
+            {{ item.status }}
+        </p>
+        <p>{{ item.message }}</p>
+    {% endfor %}
+</div>
+
+<div class="scan-card">
+    <h2>Server Information Check</h2>
+
+    <p>
+        <strong>{{ results.server_check.name }}:</strong>
+        {{ results.server_check.status }}
+    </p>
+
+    <p>{{ results.server_check.message }}</p>
+</div>
+
+<div class="scan-card">
+    <h2>Vulnerability Findings</h2>
+
+    {% if results.findings %}
+
+        {% for finding in results.findings %}
+
+            <div class="finding-item">
+                <h3>{{ finding.title }}</h3>
+
+                <p>
+                    <strong>Severity:</strong>
+                    {{ finding.severity }}
+                </p>
+
+                <p>{{ finding.description }}</p>
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No potential configuration weaknesses detected.</p>
+
+    {% endif %}
+</div>
+
+
+
+            {% else %}
+
+                <div class="scan-card">
+                    <h2>Scan Failed</h2>
+                    <p>{{ results.error }}</p>
+                </div>
+
+            {% endif %}
+
+            <p style="margin-top: 25px;">
+                <a href="/">Return to Home</a>
+            </p>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 VulnScan Lite | Cyber Security Project</p>
+    </footer>
+
+</body>
+</html>

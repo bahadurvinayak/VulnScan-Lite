@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VulnScan Lite | Scan History</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">VulnScan <span>Lite</span></div>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/results">Results</a>
+            <a href="/history">History</a>
+        </div>
+    </nav>
+
+    <main class="hero">
+        <div class="hero-content">
+
+            <h1>Scan <span>History</span></h1>
+
+            {% if scan_history %}
+
+                <div class="scan-card">
+                    <h2>Previous Website Scans</h2>
+
+                    {% for item in scan_history %}
+
+                        <div class="finding-item">
+
+                            <h3>Scan #{{ item.id }}</h3>
+
+                            <p>
+                                <strong>Website:</strong>
+                                {{ item.website_url }}
+                            </p>
+
+                            <p>
+                                <strong>HTTP Status:</strong>
+                                {{ item.status_code }}
+                            </p>
+
+                            <p>
+                                <strong>Security Score:</strong>
+                                {{ item.security_score }}/100
+                            </p>
+
+                            <p>
+                                <strong>Risk Rating:</strong>
+                                {{ item.risk_rating }}
+                            </p>
+
+                            <p>
+                                <strong>Scan Date:</strong>
+                                {{ item.scan_date }}
+                            </p>
+
+                            <p>
+                                <strong>Findings:</strong>
+                                {{ item.findings|length }}
+                            </p>
+                            <p><strong>Scan Date:</strong> {{ item.scan_date }}</p>
+<p><strong>Findings:</strong> {{ item.findings|length }}</p>
+
+<a href="{{ url_for('download_report', scan_id=item.id) }}">
+    Download PDF Report
+</a>
+
+                        </div>
+
+                    {% endfor %}
+                </div>
+
+            {% else %}
+
+                <div class="scan-card">
+                    <h2>No Scan History</h2>
+                    <p>Your previous website scans will appear here.</p>
+                    <a href="/">Start a New Scan</a>
+                </div>
+
+            {% endif %}
+
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 VulnScan Lite | Cyber Security Project</p>
+    </footer>
+
+</body>
+</html>

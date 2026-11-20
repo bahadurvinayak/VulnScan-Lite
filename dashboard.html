@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VulnScan Lite | Dashboard</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">VulnScan <span>Lite</span></div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/history">History</a>
+        </div>
+    </nav>
+
+    <main class="hero">
+        <div class="hero-content dashboard-content">
+
+            <h1>Security <span>Dashboard</span></h1>
+            <p>Overview of your website security assessments.</p>
+
+            <!-- Statistics Cards -->
+            <div class="dashboard-grid">
+
+                <div class="scan-card stat-card">
+                    <h3>Total Scans</h3>
+                    <h2>{{ stats.total_scans }}</h2>
+                    <p>Completed assessments</p>
+                </div>
+
+                <div class="scan-card stat-card">
+                    <h3>Average Security Score</h3>
+                    <h2>{{ stats.average_score }}/100</h2>
+                    <p>Across all saved scans</p>
+                </div>
+
+                <div class="scan-card stat-card">
+                    <h3>High Risk</h3>
+                    <h2>{{ stats.risk_counts.get('Needs Improvement', 0) }}</h2>
+                    <p>Scans needing improvement</p>
+                </div>
+
+            </div>
+
+            <!-- Recent Scans -->
+            <div class="scan-card dashboard-section">
+                <h2>Recent Scans</h2>
+
+                {% if stats.recent_scans %}
+                    <div class="table-wrapper">
+                        <table class="dashboard-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Website</th>
+                                    <th>Score</th>
+                                    <th>Risk Rating</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for item in stats.recent_scans %}
+                                <tr>
+                                    <td>#{{ item.id }}</td>
+                                    <td>{{ item.website_url }}</td>
+                                    <td>{{ item.security_score }}/100</td>
+                                    <td>{{ item.risk_rating }}</td>
+                                    <td>{{ item.scan_date[:10] }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p>No scans available yet. Start your first assessment.</p>
+                    <a href="/">Start New Scan</a>
+                {% endif %}
+            </div>
+
+            <!-- Risk Distribution -->
+            <div class="scan-card dashboard-section">
+                <h2>Risk Distribution</h2>
+
+                <div class="risk-list">
+                    <p>Good: <strong>{{ stats.risk_counts.get('Good', 0) }}</strong></p>
+                    <p>Moderate: <strong>{{ stats.risk_counts.get('Moderate', 0) }}</strong></p>
+                    <p>Needs Improvement: <strong>{{ stats.risk_counts.get('Needs Improvement', 0) }}</strong></p>
+                </div>
+            </div>
+
+            <div class="dashboard-actions">
+                <a href="/" class="dashboard-link">Start New Scan</a>
+                <a href="/history" class="dashboard-link">View Scan History</a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 VulnScan Lite | Cyber Security Project</p>
+    </footer>
+
+</body>
+</html>
