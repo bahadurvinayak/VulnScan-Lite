@@ -9,7 +9,7 @@ class Config:
         "vulnscan-lite-development-key"
     )
 
-    DEBUG = True
+    DEBUG = False
 
     DATABASE = os.path.join(BASE_DIR, "vulnscan.db")
 
